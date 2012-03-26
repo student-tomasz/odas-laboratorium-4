@@ -24,3 +24,28 @@ class MyARC4:
 
 def new(key):
     return MyARC4(key)
+
+
+
+if __name__ == '__main__':
+    if len(sys.argv != 3):
+        print "USAGE:"
+        print "    ./{0} <key> <plaintext_file_path>"
+    key = sys.argv[1]
+    plaintext_file = open(sys.argv[2], 'r')
+    plaintext = plaintext_file.read()
+    plaintext_file.close()
+
+    encrypted = {}
+    for cipher in [ARC4, MyARC4]:
+        encrypted[cipher] = cipher.new(key).encrypt(plaintext)
+
+    if encrypted[MyARC4] == encrypted[ARC4]:
+        print 'passed'
+    else:
+        print 'failed'
+
+    if plaintext == ARC4.new(key).decrypt(encrypted[MyARC4]):
+        print 'passed'
+    else:
+        print 'failed'
